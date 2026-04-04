@@ -25,6 +25,20 @@ foreach ($d in 'rules','commands','agents','skills') {
 - **Destination on machine:** `%USERPROFILE%\.cursor\hooks.json` + `%USERPROFILE%\.cursor\hooks\`.
 - Repo `hooks.json` is the bundle reference; it may differ from global if the installer was not run recently.
 
+**Compare repo vs global correctly:** the bundled file `hooks/hooks.json` maps to **`CURSOR_HOME\hooks.json`** (profile root), not `CURSOR_HOME\hooks\hooks.json`. When diffing hashes or timestamps, compare `REPO_ROOT\hooks\hooks.json` with `%USERPROFILE%\.cursor\hooks.json`.
+
+PowerShell:
+
+```powershell
+$repo = (Get-Location).Path
+$g = Join-Path $env:USERPROFILE '.cursor'
+$h1 = (Get-FileHash "$repo\hooks\hooks.json" -Algorithm SHA256).Hash
+$h2 = (Get-FileHash "$g\hooks.json" -Algorithm SHA256).Hash
+"hooks.json match: $($h1 -eq $h2)"
+```
+
+**Selective sync (repo ← global):** after editing hooks in the live profile, if `hooks.json` or `hooks\*.js` in `%USERPROFILE%\.cursor` is newer than the repo copies, copy back into `REPO_ROOT\hooks\` so the bundle stays authoritative. Rules/commands/skills in the repo are often newer than the profile until you re-run **`docs/guide/installation.md`**.
+
 Validate JSON:
 
 ```powershell

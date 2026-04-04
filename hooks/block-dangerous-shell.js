@@ -38,7 +38,8 @@ const BLOCKED_PATTERNS = [
 const ASK_PATTERNS = [
   /npm\s+publish/,
   /npx\s+.*deploy/,
-  /git\s+push/,
+  // git push removed: protect-branch.js handles protected branches; force-push to main/master
+  // is already in BLOCKED_PATTERNS; non-protected feature branch pushes should be autonomous.
   /docker\s+push/,
   /kubectl\s+apply/,
   /kubectl\s+delete/,

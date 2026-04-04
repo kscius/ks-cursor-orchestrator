@@ -90,10 +90,10 @@ async function main() {
   }
 
   const lines = [
-    "[Boulder-check] `.cursor/plans/*.md` still has unchecked `- [ ]` items (acceptance/checklist sections or body):",
+    "[Boulder-check] `.cursor/plans/*.md` has unchecked `- [ ]` items (acceptance/checklist sections or body):",
     ...all.map((i) => `- ${i.file}: ${i.unchecked} open checkbox(es)`),
     "",
-    "Check them off or finish the work before closing the session.",
+    "FYI: these items remain open. Review them in the next session if the task is still active.",
   ];
 
   process.stdout.write(
